@@ -32,10 +32,13 @@ let currentY = 0;
 let logMouse = false;
 
 let dragAmount = 0.005;
+let bounceVelocityLossAmount = 1.4;
 
 let zeroGravity = false;
 let zeroDrag = false;
+let zeroFriction = false;
 let log = false;
+
 
 
 
@@ -77,8 +80,6 @@ function drag()  //currently broken, needs to be fixed
     {
         dx /= dragAmount + 1; 
         dy /= dragAmount + 1; 
-        
-        
     }
     setTimeout(drag, 1);
 }
@@ -107,26 +108,31 @@ function animate()
     if (ballY > window.innerHeight)
     {
         ballY = window.innerHeight;
-        dy = 0;
-        dx /= 1.02;
+        dy /= -bounceVelocityLossAmount;
+        if (!zeroFriction)
+            dx /= 1.02;
+        
     }
     if (ballY < 0)
     {
         ballY = 0;
-        dy = 0;
-        dx /= 1.02;
+        dy /= -bounceVelocityLossAmount;
+        if (!zeroFriction)
+            dx /= 1.02;
     }
     if (ballX < 0)
     {
         ballX = 0;
-        dy /= 1.02;
-        dx = 0;
+        if (!zeroFriction)
+            dy /= 1.02;
+        dx /= -bounceVelocityLossAmount;
     }
     if (ballX > window.innerWidth)
     {
         ballX = window.innerWidth;
-        dy /= 1.02;
-        dx = 0;
+        if (!zeroFriction)
+            dy /= 1.02;
+        dx /= -bounceVelocityLossAmount;
     }
 
     ball.style.left = ballX + "px";
