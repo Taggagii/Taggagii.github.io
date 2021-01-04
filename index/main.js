@@ -32,7 +32,9 @@ let ballCount = 2;
 const pixelsMovedPerRefresh = 10;
 const metersPerPixel = 5;
 
-let start = Date.now();
+let physicsUpdatesPerFrame = 4;
+
+
 
 var GravityController = document.getElementById("Gravity");
 var CollisionsController = document.getElementById("Collisions");
@@ -59,7 +61,10 @@ var currentX = 0;
 var currentY = 0;
 var previousX = 0;
 var previousY = 0;
+let startX = Date.now();
+let startY = Date.now();
 
+let stationaryTimeout = 100;
 
 let dragAmount = 0.005;
 let bounceVelocityLossAmount = 1.4;
@@ -86,15 +91,16 @@ function logger()
     if (log)
     {
         console.log(balls);
-
     }
     setTimeout(logger, 1000);
 }
 
 function ballClick(index)
 {
+    //so the ball doesn't launch when clicked without mouse movement
     previousX = currentX; 
     previousY = currentY;
+    
     balls[index].elementIsClicked = true;
 }
 
@@ -111,7 +117,7 @@ function ballCollisions()
 {
     if (!zeroCollisions)
     {
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < physicsUpdatesPerFrame; i++)
         {
             for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
             {
@@ -187,9 +193,21 @@ function velocityCalculator()
             {
                 //happens every milisecond so gets the distance travelled per milisecond
                 if (currentY != previousY)
+                    startY = Date.now();
+                if (currentX != previousX)
+                    startX = Date.now();
+                
+                //if statements make the ball move even if the velocity should technically be 0
+                //this looks smoother and more correct
+                if (currentY != previousY)
                     ball.vy = currentY - previousY;
+                else if (Date.now() - startY > stationaryTimeout)
+                    ball.vy = 0;
+
                 if (currentX != previousX)
                     ball.vx = currentX - previousX;
+                else if (Date.now() - startX > stationaryTimeout)
+                    ball.vx = 0;
 
                 //refreshes the previous cords before the current changes
                 previousY = currentY;
