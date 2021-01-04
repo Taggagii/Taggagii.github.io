@@ -13,6 +13,28 @@ div.ball {
     user-select: none;
 }
 
+p {
+    width: fit-content;
+    user-select: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#Gravity {
+    position: fixed;
+    top: 5%;
+    left: 20%;
+
+    transform: translate(-50%, -50%);
+}
+
+#Collisions {
+    position: fixed;
+    top: 5%;
+    left: 90%;
+
+    transform: translate(-100%, -50%);
+}
+
 
 a {
     color: white;
