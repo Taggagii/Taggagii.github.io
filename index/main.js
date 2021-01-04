@@ -18,7 +18,8 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
         if (event.buttons == 1)
         {
             ballClick(name - 1);
-        });
+        }
+    });
     this.element.addEventListener("touchdown", function(event) {
         ballClick(name - 1);
     });
