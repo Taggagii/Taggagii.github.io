@@ -21,6 +21,7 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
         }
     });
     this.element.addEventListener("touchstart", function(event) {
+        alert("I don't even know bruv");
         ballClick(name - 1);
     });
     return this;
