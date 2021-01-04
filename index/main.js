@@ -144,15 +144,17 @@ function animate()
 
 
 var elementIsClicked = false;
-function pressHandler() {
+function pressHandler(event) {
+    previousX = currentX;
+    previousY = currentY;
     elementIsClicked = true;
     dy = 0;
     dx = 0;
 }
 
-ball.addEventListener("mousedown", pressHandler);
+ball.addEventListener("mousedown", pressHandler.bind(event));
 
-document.addEventListener("mouseup", function() {
+document.addEventListener("mouseup", function(event) {
     elementIsClicked = false;
 });
 
