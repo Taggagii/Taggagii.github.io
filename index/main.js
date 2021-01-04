@@ -29,7 +29,7 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
 
 
 let balls = [new Ball("1", window.innerWidth / 2, 0, 100),
-             new Ball("2", window.innerWidth / 3, 50, 20)]
+             new Ball("2", window.innerWidth / 3, 50, 50)]
 let ballCount = 2;
 
 //for (var fuck = 0; fuck < 20; fuck++) addBall(window.innerWidth / 2, window.innerHeight);
