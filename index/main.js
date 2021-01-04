@@ -55,10 +55,10 @@ CollisionsController.addEventListener("mousedown", function(event) {
 
 
 //mouse location information
-this.currentX = 0;
-this.currentY = 0;
-this.previousX = 0;
-this.previousY = 0;
+var currentX = 0;
+var currentY = 0;
+var previousX = 0;
+var previousY = 0;
 
 
 let dragAmount = 0.005;
