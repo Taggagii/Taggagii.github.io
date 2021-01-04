@@ -153,7 +153,6 @@ function ballCollisions()
                     var maxAmount = ball.radius + target.radius;
                     if (checkDistance <= maxAmount * maxAmount)
                     {
-                        //console.log(`ball ${ball.name} is colliding with ${target.name}`);
                         //overlapping
                         var distance = Math.sqrt(checkDistance);
                         var overlap = 0.5 * (distance - maxAmount);
@@ -191,23 +190,19 @@ function ballCollisions()
                         var tangentX = -distanceY;
                         var tangentY = distanceX;
 
-                        //console.log(tangentX, tangentY);
-
+                        
                         var dpTangentOne = ball.vx * tangentX + ball.vy * tangentY;
                         var dpTangentTwo = target.vx * tangentX + target.vy * tangentY;
 
-                        //console.log(dpTangentOne, dpTangentTwo);
-
+                        
                         var dpNormalOne = ball.vx * distanceX + ball.vy * distanceY;
                         var dpNormalTwo = target.vx * distanceX + target.vy * distanceY;
 
-                        //console.log(dpNormalOne, dpNormalTwo);
                         
                         var momentumOne = (dpNormalOne * (ball.mass - target.mass) + 2 * target.mass * dpNormalTwo) / (ball.mass + target.mass);
                         var momentumTwo = (dpNormalTwo * (target.mass - ball.mass) + 2 * ball.mass * dpNormalOne) / (ball.mass + target.mass);
 
-                        //console.log(momentumOne, momentumTwo);
-
+                        
                         ball.vx = tangentX * dpTangentOne + distanceX * momentumOne;
                         ball.vy = tangentY * dpTangentOne + distanceY * momentumOne;
                         target.vx = tangentX * dpTangentTwo + distanceX * momentumTwo;
@@ -278,7 +273,6 @@ function drag()  //currently broken, needs to be fixed
 
 function gravity() 
 {
-    console.log(RandomNumber(0, 10));
     if (!zeroGravity)
     {
         for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
@@ -343,7 +337,7 @@ function animate(recall = true)
 
 
 document.addEventListener("mousedown", function(event) {
-    if (event.buttons == 2)
+    if (event.buttons == 4)
     {
         event.preventDefault();
         addBall(event.x, event.y, RandomNumber(10, 70));
