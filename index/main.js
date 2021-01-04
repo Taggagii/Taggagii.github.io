@@ -2,17 +2,6 @@
 const ball = document.querySelector("div#ball");
 const pixelsMovedPerRefresh = 10;
 
-const W = 87
-const A = 65;
-const S = 83;
-const D = 68;
-
-const ARROWUP = 38;
-const ARROWLEFT = 37;
-const ARROWDOWN = 40;
-const ARROWRIGHT = 39;
-
-
 let ballX = window.innerWidth / 2;
 let ballY = 0;
 
@@ -63,10 +52,13 @@ function velocityCalculator()
 {
     if (elementIsClicked)
     {
+        //happens every milisecond so gets the distance travelled per milisecond
         if (currentY != previousY)
             dy = currentY - previousY;
         if (currentX != previousX)
             dx = currentX - previousX;
+
+        //refreshes the previous cords before the current changes
         previousY = currentY;
         previousX = currentX;
     }
@@ -78,6 +70,7 @@ function drag()  //currently broken, needs to be fixed
 {
     if (!zeroDrag)
     {
+        //sorta cheating but it works and is easier then doing the more complex math
         dx /= dragAmount + 1; 
         dy /= dragAmount + 1; 
     }
@@ -100,7 +93,6 @@ function animate()
     //console.log(ballX, ballY);
     if (!elementIsClicked)
     {
-
         ballY += dy;
         ballX += dx;
     }
@@ -144,15 +136,22 @@ function animate()
 
 
 var elementIsClicked = false;
-function pressHandler(event) {
-    previousX = currentX;
-    previousY = currentY;
-    elementIsClicked = true;
-    dy = 0;
-    dx = 0;
-}
 
-ball.addEventListener("mousedown", pressHandler.bind(event));
+
+ball.addEventListener("mousedown", function(event) {
+    if (event.buttons == 1)
+    {
+        //with this the ball won't launch if clicked and unclicked without movement
+        previousX = currentX; 
+        previousY = currentY;
+
+        elementIsClicked = true;
+        
+        //the ball has stopped when you hold it, therefore, it's not moving *mind blown* (so no velocity)
+        dy = 0;
+        dx = 0;
+    }
+});
 
 document.addEventListener("mouseup", function(event) {
     elementIsClicked = false;
