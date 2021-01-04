@@ -53,9 +53,9 @@ function logger()
     if (log)
     {
         console.log(dx, dy);
-
-        setTimeout(logger, 1);
+        
     }
+    setTimeout(logger, 1);
 }
 
 
