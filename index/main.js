@@ -20,7 +20,7 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
             ballClick(name - 1);
         }
     });
-    this.element.addEventListener("touchdown", function(event) {
+    this.element.addEventListener("touchstart", function(event) {
         ballClick(name - 1);
     });
     return this;
@@ -344,7 +344,7 @@ document.addEventListener("mouseup", function(event) {
     }
 });
 
-document.addEventListener("touchup", function(event) {
+document.addEventListener("touchend", function(event) {
     for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
     {
         var ball = balls[ballIndex];
