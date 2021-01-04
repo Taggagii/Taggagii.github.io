@@ -18,7 +18,9 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
         if (event.buttons == 1)
         {
             ballClick(name - 1);
-        }
+        });
+    this.element.addEventListener("touchdown", function(event) {
+        ballClick(name - 1);
     });
     return this;
 }
@@ -339,10 +341,34 @@ document.addEventListener("mouseup", function(event) {
         var ball = balls[ballIndex];
         ball.elementIsClicked = false;
     }
-
 });
 
+document.addEventListener("touchup", function(event) {
+    for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
+    {
+        var ball = balls[ballIndex];
+        ball.elementIsClicked = false;
+    }
+});
+
+
 document.addEventListener("mousemove", function(event)
+{
+    currentX = event.x;
+    currentY = event.y;
+    for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
+    {
+        var ball = balls[ballIndex];
+        if (ball.elementIsClicked)
+        {
+            ball.x = event.x;
+            ball.y = event.y;
+            break;
+        }
+    }
+});
+
+document.addEventListener("touchmove", function(event)
 {
     currentX = event.x;
     currentY = event.y;
