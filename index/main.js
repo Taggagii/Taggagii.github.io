@@ -24,11 +24,11 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
 }
 
 
-let balls = [new Ball("1", window.innerWidth / 2, 0),
-             new Ball("2", window.innerWidth / 3, 50)]
+let balls = [new Ball("1", window.innerWidth / 2, 0, 100),
+             new Ball("2", window.innerWidth / 3, 50, 20)]
 let ballCount = 2;
 
-for (var fuck = 0; fuck < 20; fuck++) addBall(window.innerWidth / 2, window.innerHeight);
+//for (var fuck = 0; fuck < 20; fuck++) addBall(window.innerWidth / 2, window.innerHeight);
 
 
 const pixelsMovedPerRefresh = 10;
@@ -138,24 +138,33 @@ function ballCollisions()
                         //console.log(`ball ${ball.name} is colliding with ${target.name}`);
                         //overlapping
                         var distance = Math.sqrt(checkDistance);
-                        var overlap = 0.5 * (distance - 180);
+                        var overlap = 0.5 * (distance - maxAmount);
+                        if (distance == 0)
+                            distance = -1;
                         
-                        var xVector = overlap * (ball.x - target.x) / window.innerWidth / 20;
-                        var yVector = overlap * (ball.y - target.y) / window.innerHeight / 20;
-                        if (!ball.elementIsClicked)
+                        var xVector = overlap * (ball.x - target.x) / distance;
+                        var yVector = overlap * (ball.y - target.y) / distance;
+                       
+                        if (ball.elementIsClicked)
+                        {
+                            target.y += yVector * 2;
+                            target.x += xVector * 2;
+                        }
+                        else if (target.elementIsClicked)
+                        {
+                            ball.y -= yVector * 2;
+                            ball.x -= xVector * 2;
+                        }
+                        else 
                         {
                             ball.x -= xVector;
                             ball.y -= yVector;
-                        }
-                        if (!target.elementIsClicked)
-                        {
                             target.y += yVector;
                             target.x += xVector;
                         }
-
+                        
 
                         //collision
-                        if (distance == 0) continue;;
                         distanceX /= distance;
                         distanceY /= distance;
 
