@@ -65,7 +65,7 @@ CollisionsController.addEventListener("mousedown", function(event) {
 })
 
 addBallController.addEventListener("mousedown", function(event) {
-    addBall(window.innerWidth / 2, window.innerHeight / 2, RandomNumber(10, 70));
+    addBall(RandomNumber(0, window.innerWidth), RandomNumber(0, window.innerHeight), RandomNumber(10, 70));
 })
 
 //mouse location information
