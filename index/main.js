@@ -28,6 +28,8 @@ let balls = [new Ball("1", window.innerWidth / 2, 0),
              new Ball("2", window.innerWidth / 3, 50)]
 let ballCount = 2;
 
+for (var fuck = 0; fuck < 20; fuck++) addBall(window.innerWidth / 2, window.innerHeight);
+
 
 const pixelsMovedPerRefresh = 10;
 const metersPerPixel = 5;
@@ -128,16 +130,18 @@ function ballCollisions()
                     var target = balls[ballIndex2];
                     let distanceX = ball.x - target.x;
                     let distanceY = ball.y - target.y;
-                    var checkDistance = (distanceX * distanceX + distanceY * distanceY);
+                    
+                    var checkDistance = Math.abs(distanceX * distanceX + distanceY * distanceY);
                     var maxAmount = ball.radius + target.radius;
                     if (checkDistance <= maxAmount * maxAmount)
                     {
+                        //console.log(`ball ${ball.name} is colliding with ${target.name}`);
                         //overlapping
                         var distance = Math.sqrt(checkDistance);
                         var overlap = 0.5 * (distance - 180);
-
-                        var xVector = overlap * (ball.x - target.x) / window.innerWidth ;
-                        var yVector = overlap * (ball.y - target.y) / window.innerHeight;
+                        
+                        var xVector = overlap * (ball.x - target.x) / window.innerWidth / 20;
+                        var yVector = overlap * (ball.y - target.y) / window.innerHeight / 20;
                         if (!ball.elementIsClicked)
                         {
                             ball.x -= xVector;
@@ -145,35 +149,43 @@ function ballCollisions()
                         }
                         if (!target.elementIsClicked)
                         {
-                            target.x += xVector;
                             target.y += yVector;
+                            target.x += xVector;
                         }
 
+
                         //collision
+                        if (distance == 0) continue;;
                         distanceX /= distance;
                         distanceY /= distance;
 
+                        
                         //tangent
                         var tangentX = -distanceY;
                         var tangentY = distanceX;
 
+                        //console.log(tangentX, tangentY);
+
                         var dpTangentOne = ball.vx * tangentX + ball.vy * tangentY;
                         var dpTangentTwo = target.vx * tangentX + target.vy * tangentY;
+
+                        //console.log(dpTangentOne, dpTangentTwo);
 
                         var dpNormalOne = ball.vx * distanceX + ball.vy * distanceY;
                         var dpNormalTwo = target.vx * distanceX + target.vy * distanceY;
 
+                        //console.log(dpNormalOne, dpNormalTwo);
+                        
                         var momentumOne = (dpNormalOne * (ball.mass - target.mass) + 2 * target.mass * dpNormalTwo) / (ball.mass + target.mass);
                         var momentumTwo = (dpNormalTwo * (target.mass - ball.mass) + 2 * ball.mass * dpNormalOne) / (ball.mass + target.mass);
 
-                        
+                        //console.log(momentumOne, momentumTwo);
 
                         ball.vx = tangentX * dpTangentOne + distanceX * momentumOne;
                         ball.vy = tangentY * dpTangentOne + distanceY * momentumOne;
                         target.vx = tangentX * dpTangentTwo + distanceX * momentumTwo;
                         target.vy = tangentY * dpTangentTwo + distanceY * momentumTwo;
-
-
+        
                     }
                 }
             }
