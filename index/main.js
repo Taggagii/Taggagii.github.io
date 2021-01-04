@@ -28,8 +28,8 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
 }
 
 
-let balls = [new Ball("1", window.innerWidth / 2, 0, 100),
-             new Ball("2", window.innerWidth / 3, 50, 50)]
+let balls = [new Ball("1", window.innerWidth / 2, window.innerHeight/2, 120),
+             new Ball("2", window.innerWidth / 2.81, window.innerHeight/1.6, 30)]
 let ballCount = 2;
 
 //for (var fuck = 0; fuck < 20; fuck++) addBall(window.innerWidth / 2, window.innerHeight);
@@ -76,11 +76,21 @@ let dragAmount = 0.005;
 let bounceVelocityLossAmount = 1.4;
 let ballTeminalVelocity = 57;
 
-let zeroGravity = false;
+let zeroGravity = true;
 let zeroDrag = false;
 let zeroFriction = false;
 let zeroVelocity = false;
 let zeroCollisions = false;
+
+if (zeroGravity)
+    GravityController.innerHTML = "Hello Gravity?";
+else
+    GravityController.innerHTML = "Goodbye Gravity?";
+    
+if (zeroCollisions)
+    CollisionsController.innerHTML = "Hello Collisions?";
+else
+    CollisionsController.innerHTML = "Goodbye Collisions?";
 
 let log = false;
 let logMouse = false;
