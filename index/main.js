@@ -19,7 +19,6 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
     this.element.addEventListener("mousedown", function(event) {
         if (event.buttons == 1)
         {
-            console.log(`you're touching ball ${name}`);
             ballClick(name - 1);
         }
     });
