@@ -111,61 +111,64 @@ function ballCollisions()
 {
     if (!zeroCollisions)
     {
-        for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
+        for (var i = 0; i < 4; i++)
         {
-            var ball = balls[ballIndex];
-            for (var ballIndex2 = 0; ballIndex2 < ballCount; ballIndex2++)
+            for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
             {
-                if (ballIndex == ballIndex2) continue;
-                var target = balls[ballIndex2];
-                let distanceX = ball.x - target.x;
-                let distanceY = ball.y - target.y;
-                var checkDistance = (distanceX * distanceX + distanceY * distanceY);
-                var maxAmount = ball.radius + target.radius;
-                if (checkDistance <= maxAmount * maxAmount)
+                var ball = balls[ballIndex];
+                for (var ballIndex2 = 0; ballIndex2 < ballCount; ballIndex2++)
                 {
-                    //overlapping
-                    var distance = Math.sqrt(checkDistance);
-                    var overlap = 0.5 * (distance - 180);
-
-                    var xVector = overlap * (ball.x - target.x) / window.innerWidth ;
-                    var yVector = overlap * (ball.y - target.y) / window.innerHeight;
-                    if (!ball.elementIsClicked)
+                    if (ballIndex == ballIndex2) continue;
+                    var target = balls[ballIndex2];
+                    let distanceX = ball.x - target.x;
+                    let distanceY = ball.y - target.y;
+                    var checkDistance = (distanceX * distanceX + distanceY * distanceY);
+                    var maxAmount = ball.radius + target.radius;
+                    if (checkDistance <= maxAmount * maxAmount)
                     {
-                        ball.x -= xVector;
-                        ball.y -= yVector;
+                        //overlapping
+                        var distance = Math.sqrt(checkDistance);
+                        var overlap = 0.5 * (distance - 180);
+
+                        var xVector = overlap * (ball.x - target.x) / window.innerWidth ;
+                        var yVector = overlap * (ball.y - target.y) / window.innerHeight;
+                        if (!ball.elementIsClicked)
+                        {
+                            ball.x -= xVector;
+                            ball.y -= yVector;
+                        }
+                        if (!target.elementIsClicked)
+                        {
+                            target.x += xVector;
+                            target.y += yVector;
+                        }
+
+                        //collision
+                        distanceX /= distance;
+                        distanceY /= distance;
+
+                        //tangent
+                        var tangentX = -distanceY;
+                        var tangentY = distanceX;
+
+                        var dpTangentOne = ball.vx * tangentX + ball.vy * tangentY;
+                        var dpTangentTwo = target.vx * tangentX + target.vy * tangentY;
+
+                        var dpNormalOne = ball.vx * distanceX + ball.vy * distanceY;
+                        var dpNormalTwo = target.vx * distanceX + target.vy * distanceY;
+
+                        var momentumOne = (dpNormalOne * (ball.mass - target.mass) + 2 * target.mass * dpNormalTwo) / (ball.mass + target.mass);
+                        var momentumTwo = (dpNormalTwo * (target.mass - ball.mass) + 2 * ball.mass * dpNormalOne) / (ball.mass + target.mass);
+
+                        
+
+                        ball.vx = tangentX * dpTangentOne + distanceX * momentumOne;
+                        ball.vy = tangentY * dpTangentOne + distanceY * momentumOne;
+                        target.vx = tangentX * dpTangentTwo + distanceX * momentumTwo;
+                        target.vy = tangentY * dpTangentTwo + distanceY * momentumTwo;
+
+
                     }
-                    if (!target.elementIsClicked)
-                    {
-                        target.x += xVector;
-                        target.y += yVector;
-                    }
-
-                    //collision
-                    distanceX /= distance;
-                    distanceY /= distance;
-
-                    //tangent
-                    var tangentX = -distanceY;
-                    var tangentY = distanceX;
-
-                    var dpTangentOne = ball.vx * tangentX + ball.vy * tangentY;
-                    var dpTangentTwo = target.vx * tangentX + target.vy * tangentY;
-
-                    var dpNormalOne = ball.vx * distanceX + ball.vy * distanceY;
-                    var dpNormalTwo = target.vx * distanceX + target.vy * distanceY;
-
-                    var momentumOne = (dpNormalOne * (ball.mass - target.mass) + 2 * target.mass * dpNormalTwo) / (ball.mass + target.mass);
-                    var momentumTwo = (dpNormalTwo * (target.mass - ball.mass) + 2 * ball.mass * dpNormalOne) / (ball.mass + target.mass);
-
-                    
-
-                    ball.vx = tangentX * dpTangentOne + distanceX * momentumOne;
-                    ball.vy = tangentY * dpTangentOne + distanceY * momentumOne;
-                    target.vx = tangentX * dpTangentTwo + distanceX * momentumTwo;
-                    target.vy = tangentY * dpTangentTwo + distanceY * momentumTwo;
-
-
                 }
             }
         }
