@@ -1,20 +1,17 @@
-div#ball {
+div.ball {
     background-color: black;
     
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
 
     position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    mix-blend-mode:screen;
+    mix-blend-mode: difference;
     user-select: none;
 }
-
-
 
 
 a {
@@ -24,7 +21,6 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 50px;
-
     user-select: none;
     
 
