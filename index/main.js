@@ -21,7 +21,7 @@ var Ball = function(name, x = 0, y = 0, radius = 45)
         }
     });
     this.element.addEventListener("touchstart", function(event) {
-        alert("I don't even know bruv");
+        
         ballClick(name - 1);
     });
     return this;
@@ -350,7 +350,6 @@ document.addEventListener("touchend", function(event) {
     {
         var ball = balls[ballIndex];
         ball.elementIsClicked = false;
-        alert("testing things");
     }
 });
 
@@ -373,15 +372,15 @@ document.addEventListener("mousemove", function(event)
 
 document.addEventListener("touchmove", function(event)
 {
-    currentX = event.x;
-    currentY = event.y;
+    currentX = event.touches[0].pageX;
+    currentY = event.touches[0].pageY;
     for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
     {
         var ball = balls[ballIndex];
         if (ball.elementIsClicked)
         {
-            ball.x = event.x;
-            ball.y = event.y;
+            ball.x = currentX;
+            ball.y = currentY;
             break;
         }
     }
