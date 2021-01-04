@@ -1,6 +1,4 @@
-//Two circles will touch if the distance between their centres, , is equal to the sum of their radii, or the difference between their radii.
 
-let clicked = false;
 
 var Ball = function(name, x = 0, y = 0, radius = 45)
 {
