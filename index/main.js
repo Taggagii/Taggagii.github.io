@@ -350,6 +350,7 @@ document.addEventListener("touchend", function(event) {
     {
         var ball = balls[ballIndex];
         ball.elementIsClicked = false;
+        alert("testing things");
     }
 });
 
