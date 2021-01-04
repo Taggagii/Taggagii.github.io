@@ -14,9 +14,11 @@ div.ball {
 }
 
 p {
+    color: lightblue;
     width: fit-content;
     user-select: none;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    mix-blend-mode: difference;
 }
 
 #Gravity {
