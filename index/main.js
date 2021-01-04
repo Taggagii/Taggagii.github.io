@@ -32,7 +32,9 @@ let balls = [new Ball("1", window.innerWidth / 2, window.innerHeight/2, 120),
              new Ball("2", window.innerWidth / 2.81, window.innerHeight/1.6, 30)]
 let ballCount = 2;
 
-//for (var fuck = 0; fuck < 20; fuck++) addBall(window.innerWidth / 2, window.innerHeight);
+function RandomNumber(lowest, hightest) {
+    return Math.floor(Math.random() * (hightest - lowest)) + lowest;
+}
 
 
 const pixelsMovedPerRefresh = 10;
@@ -44,6 +46,7 @@ let physicsUpdatesPerFrame = 4;
 
 var GravityController = document.getElementById("Gravity");
 var CollisionsController = document.getElementById("Collisions");
+var addBallController = document.getElementById("addBall");
 
 GravityController.addEventListener("mousedown", function(event) {
     zeroGravity = !zeroGravity;
@@ -61,6 +64,9 @@ CollisionsController.addEventListener("mousedown", function(event) {
         CollisionsController.innerHTML = "Goodbye Collisions?";
 })
 
+addBallController.addEventListener("mousedown", function(event) {
+    addBall(window.innerWidth / 2, window.innerHeight / 2, RandomNumber(10, 70));
+})
 
 //mouse location information
 var currentX = 0;
@@ -86,7 +92,6 @@ if (zeroGravity)
     GravityController.innerHTML = "Hello Gravity?";
 else
     GravityController.innerHTML = "Goodbye Gravity?";
-    
 if (zeroCollisions)
     CollisionsController.innerHTML = "Hello Collisions?";
 else
@@ -120,11 +125,10 @@ function ballClick(index)
     balls[index].elementIsClicked = true;
 }
 
-function addBall(x, y)
+function addBall(x, y, radius)
 {
     balls[ballCount - 1].element.insertAdjacentHTML('afterend', `<div class = "ball" id = 'ball${++ballCount}'></div>`);
-    console.log();
-    balls.push(new Ball(ballCount, x, y, Math.floor(Math.random() * 80) + 10));
+    balls.push(new Ball(ballCount, x, y, radius));
     var ball = balls[ballCount - 1];
     
 }
@@ -274,6 +278,7 @@ function drag()  //currently broken, needs to be fixed
 
 function gravity() 
 {
+    console.log(RandomNumber(0, 10));
     if (!zeroGravity)
     {
         for (var ballIndex = 0; ballIndex < ballCount; ballIndex++)
@@ -338,10 +343,10 @@ function animate(recall = true)
 
 
 document.addEventListener("mousedown", function(event) {
-    if (event.buttons == 4)
+    if (event.buttons == 2)
     {
         event.preventDefault();
-        addBall(event.x, event.y);
+        addBall(event.x, event.y, RandomNumber(10, 70));
     }
     
 })

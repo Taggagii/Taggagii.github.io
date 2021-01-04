@@ -37,6 +37,14 @@ p {
     transform: translate(-100%, -50%);
 }
 
+#addBall {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
 
 a {
     color: white;
