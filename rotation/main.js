@@ -1,17 +1,27 @@
 var canvas = document.getElementById("gameArea");
 var context = canvas.getContext("2d");
 
-var directionalCells = 100;
+var cellSize = 10;
+
+var cellWidth = cellSize;
+var cellHeight = cellSize;
+var directionalCells = 500;
 var numberOfCells = directionalCells ** 2;
 
-var cellWidth = canvas.clientWidth / directionalCells;
-var cellHeight = canvas.clientHeight / directionalCells
+context.canvas.width = cellWidth * directionalCells;
+context.canvas.height = cellHeight * directionalCells;
+
+
+
+
+
 
 var cells = Array(numberOfCells).fill(0);
 
 var checkingRules = false;
 
-var clicking = false;
+var clickingleft = false;
+var clickingright = false
 
 function checkRules()
 {
@@ -40,8 +50,16 @@ function checkRules()
     cells = newCells
     drawGrid();
     updateCells();
-    setTimeout(checkRules, 10);
+    setTimeout(checkRules, 0);
 }
+
+function resetCells()
+{
+    cells = Array(numberOfCells).fill(0);
+    drawGrid();
+    updateCells();
+}
+
 
 function getSurroundingCells(index)
 {
@@ -77,8 +95,9 @@ drawGrid();
 updateCells();
 function drawGrid()
 {
+
     context.beginPath();
-    context.rect(0, 0, innerWidth, innerHeight);
+    context.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
     context.fillStyle = "black";
     context.fill();
 
@@ -121,6 +140,15 @@ function updateCells()
     }
 }
 
+function changeAtTo(x, y, value)
+{
+    if (x >= canvas.clientWidth || y >= canvas.clientHeight) return;
+    let cellX = Math.floor(x / cellWidth);
+    let cellY = Math.floor(y / cellHeight);
+    let cellsIndex = cellX + cellY * directionalCells;
+    cells[cellsIndex] = value;
+}
+
 function drawBox(startX, startY, endX, endY, color = "white")
 {
     context.beginPath();
@@ -129,47 +157,50 @@ function drawBox(startX, startY, endX, endY, color = "white")
     context.fill();
 }
 
+document.addEventListener('contextmenu', event => event.preventDefault());
 
 document.addEventListener("mousedown", (e) => {
-    clicking = true;
-    if (e.x >= canvas.clientWidth || e.y >= canvas.clientHeight) return;
-    let cellX = Math.floor(e.x / cellWidth);
-    let cellY = Math.floor(e.y / cellHeight);
-    let cellsIndex = cellX + cellY * directionalCells;
-    cells[cellsIndex] ^= 1;
-    let values = getSurroundingCells(cellsIndex);
-    //console.log(values);
-    let liveNeighbours = 0;
-    for (var ii = 0; ii < values.length; ii++)
+    if (e.button === 0)
     {
-        if (cells[values[[ii]]]) liveNeighbours++;
+        
+        clickingleft = true;
+        changeAtTo(e.offsetX, e.offsetY, true);
+        drawGrid();
+        updateCells();
     }
-    //console.log(liveNeighbours);
-    drawGrid();
-    updateCells();
+    if (e.button === 2)
+    {
+        e.preventDefault();
+        clickingright = true;
+        changeAtTo(e.offsetX, e.offsetY, false);
+        drawGrid();
+        updateCells();
+    }
+
 })
 
 document.addEventListener("mouseup", (e) => {
-    clicking = false;
+    if (e.button === 0)
+    {
+        clickingleft = false;
+    }
+    if (e.button === 2)
+    {
+        clickingright = false;
+    }
 })
 
 document.addEventListener("mousemove", (e) =>
 {
-    if (clicking)
+    if (clickingleft)
     {
-        if (e.x >= canvas.clientWidth || e.y >= canvas.clientHeight) return;
-        let cellX = Math.floor(e.x / cellWidth);
-        let cellY = Math.floor(e.y / cellHeight);
-        let cellsIndex = cellX + cellY * directionalCells;
-        cells[cellsIndex] ^= 1;
-        let values = getSurroundingCells(cellsIndex);
-        //console.log(values);
-        let liveNeighbours = 0;
-        for (var ii = 0; ii < values.length; ii++)
-        {
-            if (cells[values[[ii]]]) liveNeighbours++;
-        }
-        //console.log(liveNeighbours);
+        changeAtTo(e.offsetX, e.offsetY, true);
+        drawGrid();
+        updateCells();
+    }
+    if (clickingright)
+    {
+        changeAtTo(e.offsetX, e.offsetY, false);
         drawGrid();
         updateCells();
     }
@@ -180,6 +211,10 @@ document.addEventListener("keydown", (e) => {
     {
         checkingRules ^= 1;
         checkRules();
+    }
+    if (e.key === "c")
+    {
+        resetCells();
     }
 })
 
