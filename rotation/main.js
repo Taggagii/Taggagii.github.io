@@ -13,9 +13,6 @@ context.canvas.height = cellHeight * directionalCells;
 
 
 
-
-
-
 var cells = Array(numberOfCells).fill(0);
 
 var checkingRules = false;
@@ -101,18 +98,18 @@ function drawGrid()
     context.fillStyle = "black";
     context.fill();
 
-    context.beginPath();
-    context.strokeStyle = "white";
-    for (var i = 0; i < directionalCells; i++)
-    {
-        var startX = i * cellWidth;
-        context.moveTo(startX, 0);
-        context.lineTo(startX, canvas.clientHeight);
-        var startY = i * cellHeight;
-        context.moveTo(0, startY);
-        context.lineTo(canvas.clientWidth, startY);
-    }
-    context.stroke();
+    // context.beginPath();
+    // context.strokeStyle = "white";
+    // for (var i = 0; i < directionalCells; i++)
+    // {
+    //     var startX = i * cellWidth;
+    //     context.moveTo(startX, 0);
+    //     context.lineTo(startX, canvas.clientHeight);
+    //     var startY = i * cellHeight;
+    //     context.moveTo(0, startY);
+    //     context.lineTo(canvas.clientWidth, startY);
+    // }
+    // context.stroke();
 }
 
 function updateCells()
