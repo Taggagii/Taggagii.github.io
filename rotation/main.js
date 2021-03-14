@@ -5,7 +5,7 @@ var cellSize = 10;
 
 var cellWidth = cellSize;
 var cellHeight = cellSize;
-var directionalCells = 500;
+var directionalCells = 250;
 var numberOfCells = directionalCells ** 2;
 
 context.canvas.width = cellWidth * directionalCells;
