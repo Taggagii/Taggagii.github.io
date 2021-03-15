@@ -26,8 +26,6 @@ function checkRules()
     let newCells = cells.slice();
     for (var i = 0; i < numberOfCells; i++)
     {
-        //underpopulation
-        //Any cell with fewer than two live neighbours dies
         let values = getSurroundingCells(i);
         let liveNeighbours = 0;
         for (var ii = 0; ii < values.length; ii++)
