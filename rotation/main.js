@@ -2,10 +2,10 @@ var canvas = document.getElementById("gameArea");
 var context = canvas.getContext("2d");
 
 var cellSize = 10;
+var directionalCells = 250;
 
 var cellWidth = cellSize;
 var cellHeight = cellSize;
-var directionalCells = 250;
 var numberOfCells = directionalCells ** 2;
 
 context.canvas.width = cellWidth * directionalCells;
