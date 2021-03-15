@@ -2,10 +2,10 @@ var canvas = document.getElementById("gameArea");
 var context = canvas.getContext("2d");
 
 var cellSize = 10;
-var directionalCells = 250;
 
 var cellWidth = cellSize;
 var cellHeight = cellSize;
+var directionalCells = 250;
 var numberOfCells = directionalCells ** 2;
 
 context.canvas.width = cellWidth * directionalCells;
@@ -18,7 +18,10 @@ var cells = Array(numberOfCells).fill(0);
 var checkingRules = false;
 
 var clickingleft = false;
-var clickingright = false
+var clickingright = false;
+
+var backup = cells;
+
 
 function checkRules()
 {
@@ -26,6 +29,8 @@ function checkRules()
     let newCells = cells.slice();
     for (var i = 0; i < numberOfCells; i++)
     {
+        //underpopulation
+        //Any cell with fewer than two live neighbours dies
         let values = getSurroundingCells(i);
         let liveNeighbours = 0;
         for (var ii = 0; ii < values.length; ii++)
@@ -210,6 +215,16 @@ document.addEventListener("keydown", (e) => {
     if (e.key === "c")
     {
         resetCells();
+    }
+    if (e.key === "s")
+    {
+        backup = cells.slice();
+    }
+    if (e.key === "b")
+    {
+        cells = backup.slice();
+        drawGrid();
+        updateCells();
     }
 })
 
