@@ -52,11 +52,11 @@ function generateStartingAsteroids()
 
 
 var deathSounds = [
-    new Audio("Death.mp3"),
-    new Audio("Death2.mp3"),
-    new Audio("Death5.mp3"),
-    new Audio("Death4.mp3"),
-    new Audio("Death3.mp3"),
+    new Audio("asteroids/Death.mp3"),
+    new Audio("asteroids/Death2.mp3"),
+    new Audio("asteroids/Death5.mp3"),
+    new Audio("asteroids/Death4.mp3"),
+    new Audio("asteroids/Death3.mp3"),
 ];
 
 var ship = {
@@ -78,7 +78,7 @@ var ship = {
     immuneTimer: 0,
     immuneTime: 3,
     show: true,
-    fireRate: 0.25, //per second
+    fireRate: 0.25, //r second
     score: 0,
     bulletSpeed: 30,
     bulletLifeTime: 1,
@@ -284,7 +284,7 @@ function runChecks()
             if (checkAsteroidIntersection(asteroids[ii], ship.bullets[i].x, ship.bullets[i].y))
             {
                 ship.score += asteroids[ii].size;
-                new Audio("bang.wav").play();
+                new Audio("asteroids/bang.wav").play();
                 let asteroidMaxSpeed =  asteroidsData.speedFinder(asteroids[ii].size);
                 let xv = random(-asteroidMaxSpeed, asteroidMaxSpeed), yv = random(-asteroidMaxSpeed, asteroidMaxSpeed)
                 if (asteroids[ii].size in asteroidsData)
@@ -446,7 +446,7 @@ function shoot()
     let addedBullet = addBullet();
     if (addedBullet)
     {
-        var sound = new Audio("laser.mp3");
+        var sound = new Audio("asteroids/laser.mp3");
         sound.play();
     }
     ship.reloaded = false;
