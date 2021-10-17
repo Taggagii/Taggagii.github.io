@@ -23,3 +23,8 @@
 //         pushHome();
 //     });
 // });
+
+$.getJSON("https://taggagii.github.io/home.html", function(data) {
+    console.log(data);
+    console.log("what");
+})
