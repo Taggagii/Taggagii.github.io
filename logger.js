@@ -16,10 +16,12 @@ $.get("https://taggagii.github.io/home.html", function(home) {
 
             let data = {
                 date: new Date(),
-                ipv4: ipv4.ip,
-                ipv6: ipv6.ip
+                page: window.location.href,
+                user: {
+                    ipv4: ipv4.ip,
+                    ipv6: ipv6.ip
+                }   
             }
-
             pushHome(data);
         });
     });
