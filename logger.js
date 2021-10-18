@@ -1,6 +1,6 @@
-$.get("https://taggagii.github.io/home.html", function(home) {
 
-    console.log(home);
+
+    let home = "https://7b50-2620-101-f000-2c03-00-c5d.ngrok.io";
 
     function pushHome(data)
     {
@@ -28,4 +28,3 @@ $.get("https://taggagii.github.io/home.html", function(home) {
             pushHome(data);
         });
     });
-});
