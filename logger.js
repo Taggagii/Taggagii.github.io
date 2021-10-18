@@ -1,4 +1,7 @@
 $.get("https://taggagii.github.io/home.html", function(home) {
+
+    console.log(home);
+
     function pushHome(data)
     {
         $.ajax({
