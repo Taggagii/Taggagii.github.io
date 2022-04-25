@@ -614,7 +614,7 @@ function gameOver(time, showTime)
 
 function finale()
 {
-    window.location.href = "https://taggagii.github.io/rotation.html"
+    window.location.href = "https://taggagii.github.io/"
 }
 
 //
