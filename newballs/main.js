@@ -34,8 +34,8 @@ function add_ball(x, y, xvel, yvel, radius) {
 //     add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, random_number(10, 40));
 // }
 
-for (var i = 0; i < 500; ++i) {
-    add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, 5);
+for (var i = 0; i < 200; ++i) {
+    add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, random_number(5, 50));
 }
 add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, 50);
 
