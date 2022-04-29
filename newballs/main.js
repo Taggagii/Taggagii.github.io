@@ -1,9 +1,9 @@
 const FPS = 144;
 const FPS_INTERVAL = 1000 / FPS;
 
-const DRAG_ON = false;
-const GRAVITY_ON = false;
-const RENDER_VELOCITY_LINES = false;
+var DRAG_ON = false;
+var GRAVITY_ON = false;
+var RENDER_VELOCITY_LINES = false;
 
 const FORCE_OF_GRAVITY = 0.001;
 const DRAG_COEFF = 0.05
