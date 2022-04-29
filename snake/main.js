@@ -2,7 +2,7 @@ const BACKGROUND_COLOR = "lightblue";
 var width = Math.min(window.innerWidth, window.innerHeight) - 50;
 var height = width;
 
-const TILE_COUNT = 15;
+const TILE_COUNT = 9;
 const TILE_FULL_COUNT = TILE_COUNT * TILE_COUNT;
 const TILE_WIDTH = width / TILE_COUNT;
 const TILE_HEIGHT = TILE_WIDTH;
@@ -351,7 +351,8 @@ game_loop();
 
 
 document.addEventListener("keydown", function(event) {
-    if (!snake.updated) return;
+    if (!snake.updated && !snake.dead) return;
+    console.log("testing if running");
     let new_direction = 0;
     switch(event.key) {
         case "ArrowUp": 
@@ -371,6 +372,7 @@ document.addEventListener("keydown", function(event) {
             event.preventDefault();
             break;
         case " ":
+            console.log("leaving the page")
             if (snake.dead) this.location.reload();
             break;
             
