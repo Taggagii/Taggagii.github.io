@@ -112,7 +112,7 @@ function check_for_collisions() {
         var constant = (2 * ((balls[index1].x - balls[index2].x) * (balls[index1].xvel - balls[index2].xvel) + 
                        (balls[index1].y - balls[index2].y) * (balls[index1].yvel - balls[index2].yvel))) / 
                        ((mass1 + mass2) * (Math.pow(balls[index1].x - balls[index2].x, 2) + Math.pow(balls[index1].y - balls[index2].y, 2)));
-                       
+        if (constant == NaN) continue;
         let n = 0.75;
                                                                                         // attempting to have deformation
         balls[index1].xvel -= (mass2 * constant * (balls[index1].x - balls[index2].x))  * n;
