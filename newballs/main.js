@@ -1,18 +1,21 @@
+
 const FPS = 144;
 const FPS_INTERVAL = 1000 / FPS;
 
-var DRAG_ON = false;
+var DRAG_ON = true;
 var GRAVITY_ON = false;
 var RENDER_VELOCITY_LINES = false;
+var RENDER_CONNECTING_LINES = false;
+//var PERFECTLY_ELASTIC_COLLISIONS = false;
 
 const FORCE_OF_GRAVITY = 0.001;
 const DRAG_COEFF = 0.05
-const DENSITY_OF_AIR = 0.40;
+const DENSITY_OF_AIR = 0.08;
 const DRAG_MULTIPLE = 2 * DRAG_COEFF * DENSITY_OF_AIR;
 
 var screen = document.querySelector("#screen");
 screen.width = window.innerWidth;
-screen.height = window.innerHeight;
+screen.height = window.innerHeight + 10;
 var context = screen.getContext("2d");
 
 function random_number(min, max) {
@@ -29,15 +32,76 @@ function add_ball(x, y, xvel, yvel, radius) {
     balls.push({"x": x, "y": y, "xvel": xvel, "yvel": yvel, "radius": radius});
 }
 
-// let ball_count_temp = 20;
-// for (var i = 0; i < ball_count_temp; ++i) {
-//     add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, random_number(10, 40));
+let ball_count_temp = 1;
+for (var i = 0; i < ball_count_temp; ++i) {
+    add_random_ball();
+}
+
+function add_random_ball() {
+    add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, random_number(20, 50));
+}
+
+// let r = 25;
+// for (var i = 0; i < screen.width / (r * 2); i += 1) {
+//     for (var ii = 1; ii < screen.height / (r * 2); ii += 1) {
+//         add_ball(r * 2 * i, r * ii * 2, 0, 0.00, r);
+//     }
+    
 // }
 
-for (var i = 0; i < 200; ++i) {
-    add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, random_number(5, 50));
-}
-add_ball(random_number(0, screen.width), random_number(0, screen.height), 0, 0, 50);
+// handling changing game states
+
+
+
+var GravityController = document.getElementById("Gravity");
+var CollisionsController = document.getElementById("Collisions");
+var addBallController = document.getElementById("addBall");
+var removeBallController = document.getElementById("removeBall");
+
+if (GRAVITY_ON)
+    GravityController.innerHTML = "Turn Off Gravity?";
+else
+    GravityController.innerHTML = "Turn On Gravity?";
+if (RENDER_CONNECTING_LINES)
+    CollisionsController.innerHTML = "Turn Off Render Info?";
+else
+    CollisionsController.innerHTML = "Turn On Render Info?";
+
+console.log(GravityController, CollisionsController, addBallController);
+
+GravityController.addEventListener("mousedown", function(event) {
+    console.log("testing gravity");
+    GRAVITY_ON = !GRAVITY_ON;
+    if (!GRAVITY_ON)
+        GravityController.innerHTML = "Turn On Gravity?";
+    else
+        GravityController.innerHTML = "Turn Off Gravity?";
+});
+
+CollisionsController.addEventListener("mousedown", function(event) {
+    RENDER_CONNECTING_LINES = !RENDER_CONNECTING_LINES;
+    RENDER_VELOCITY_LINES = !RENDER_VELOCITY_LINES;
+    if (RENDER_CONNECTING_LINES)
+        CollisionsController.innerHTML = "Turn On Render Info?";
+    else
+        CollisionsController.innerHTML = "Turn Off Render Info?";
+})
+
+addBallController.addEventListener("mousedown", function(event) {
+    add_random_ball();
+
+    addBallController.innerHTML = `Add Ball: ${balls.length + 1}?`;
+    removeBallController.innerHTML = `Remove Ball: ${balls.length}?`;
+})
+
+removeBallController.addEventListener("mousedown", function(event) {
+    balls.pop();
+
+    addBallController.innerHTML = `Add Ball: ${balls.length + 1}?`;
+    removeBallController.innerHTML = `Remove Ball: ${balls.length}?`;
+})
+
+
 
 
 
@@ -113,12 +177,13 @@ function check_for_collisions() {
                        (balls[index1].y - balls[index2].y) * (balls[index1].yvel - balls[index2].yvel))) / 
                        ((mass1 + mass2) * (Math.pow(balls[index1].x - balls[index2].x, 2) + Math.pow(balls[index1].y - balls[index2].y, 2)));
         if (isNaN(constant)) continue;
-        let n = 0.75;
+        //let n = 0.75;
+        //if (PERFECTLY_ELASTIC_COLLISIONS) n = 1;
                                                                                         // attempting to have deformation
-        balls[index1].xvel -= (mass2 * constant * (balls[index1].x - balls[index2].x))  * n;
-        balls[index1].yvel -= (mass2 * constant * (balls[index1].y - balls[index2].y))  * n;
-        balls[index2].xvel -= (mass1 * constant * (balls[index2].x - balls[index1].x))  * n;
-        balls[index2].yvel -= (mass1 * constant * (balls[index2].y - balls[index1].y))  * n;
+        balls[index1].xvel -= (mass2 * constant * (balls[index1].x - balls[index2].x)); //  * n;
+        balls[index1].yvel -= (mass2 * constant * (balls[index1].y - balls[index2].y)); //  * n;
+        balls[index2].xvel -= (mass1 * constant * (balls[index2].x - balls[index1].x)); //  * n;
+        balls[index2].yvel -= (mass1 * constant * (balls[index2].y - balls[index1].y)); //  * n;
         
 
     }
@@ -146,33 +211,44 @@ function update_balls(elapsed) {
             let newx = (balls[i].x + balls[i].xvel * elapsed);
             let newy = (balls[i].y + balls[i].yvel * elapsed);
 
+
+            // wall collisions
+            let energy_conserved = 0.8; // if set to 1 then all energy is conserved
             if (newx - balls[i].radius < 0) {
                 newx = balls[i].radius;
-                balls[i].xvel *= -1;
+                balls[i].xvel *= -energy_conserved;
             } else if (newx + balls[i].radius > screen.width) {
                 newx = screen.width - balls[i].radius
-                balls[i].xvel *= -1;
+                balls[i].xvel *= -energy_conserved;
             } 
             if (newy - balls[i].radius < 0) {
                 newy = balls[i].radius;
-                balls[i].yvel *= -1
+                balls[i].yvel *= -energy_conserved;
             } else if (newy + balls[i].radius > screen.height) {
                 newy = screen.height - balls[i].radius;
-                balls[i].yvel *= -1
+                balls[i].yvel *= -energy_conserved;
             } 
     
             balls[i].x = newx;
             balls[i].y = newy;
             
         } else {
-            if (mouse.x - balls[i].radius > 0 && mouse.x + balls[i].radius < screen.width) {
+            if (mouse.x - balls[i].radius <= 0) {
+                balls[i].x = balls[i].radius;
+            } else if (mouse.x + balls[i].radius >= screen.width) {
+                balls[i].x = screen.width - balls[i].radius;
+            } else {
                 balls[i].x = mouse.x;
-                
             }
-            if (mouse.y - balls[i].radius > 0 && mouse.y + balls[i].radius < screen.height) {
+
+            if (mouse.y - balls[i].radius <= 0) {
+                balls[i].y = balls[i].radius;
+            } else if (mouse.y + balls[i].radius >= screen.height) {
+                balls[i].y = screen.height - balls[i].radius;
+            } else {
                 balls[i].y = mouse.y;
             }
-            
+
 
             let xvel = (mouse.x - mouse.px) / elapsed;
             let yvel = (mouse.y - mouse.py) / elapsed;
@@ -187,8 +263,22 @@ function update_balls(elapsed) {
     }
 }
 
+function render_connecting_lines() {
+    if (!RENDER_CONNECTING_LINES) return;
+    let color = context.strokeStyle;
+    context.strokeStyle = "red";
+    context.beginPath();
+    context.moveTo(balls[0].x, balls[0].y);
+    for (var i = 0; i < balls.length; ++i) {
+        clear();
+        context.lineTo(balls[i].x, balls[i].y);
+    }
+    context.stroke();
+    context.strokeStyle = color;
+}
+
 function render_balls() {
-    //console.log(balls[0]);
+    
     for (var i = 0; i < balls.length; ++i) {
         draw_ball(balls[i].x, balls[i].y, balls[i].radius);
         if (RENDER_VELOCITY_LINES) {
@@ -199,6 +289,7 @@ function render_balls() {
         }
         
     }
+
     
 }
 
@@ -214,11 +305,13 @@ function game_loop() {
 
         // render
         clear();
-        
+        render_connecting_lines();
         render_balls();
     }
     update_balls(elapsed);
-    check_for_collisions();
+    for (let i = 0; i < 7; ++i) {
+        check_for_collisions();
+    }
     
     requestAnimationFrame(game_loop);
 }
