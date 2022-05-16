@@ -63,9 +63,9 @@ if (GRAVITY_ON)
 else
     GravityController.innerHTML = "Turn On Gravity?";
 if (RENDER_CONNECTING_LINES)
-    CollisionsController.innerHTML = "Turn On Render Info?";
-else
     CollisionsController.innerHTML = "Turn Off Render Info?";
+else
+    CollisionsController.innerHTML = "Turn On Render Info?";
 
 console.log(GravityController, CollisionsController, addBallController);
 
@@ -82,9 +82,9 @@ CollisionsController.addEventListener("mousedown", function(event) {
     RENDER_CONNECTING_LINES = !RENDER_CONNECTING_LINES;
     RENDER_VELOCITY_LINES = !RENDER_VELOCITY_LINES;
     if (RENDER_CONNECTING_LINES)
-        CollisionsController.innerHTML = "Turn On Render Info?";
-    else
         CollisionsController.innerHTML = "Turn Off Render Info?";
+    else
+        CollisionsController.innerHTML = "Turn On Render Info?";
 })
 
 addBallController.addEventListener("mousedown", function(event) {
