@@ -63,9 +63,9 @@ if (GRAVITY_ON)
 else
     GravityController.innerHTML = "Turn On Gravity?";
 if (RENDER_CONNECTING_LINES)
-    CollisionsController.innerHTML = "Turn Off Render Info?";
-else
     CollisionsController.innerHTML = "Turn On Render Info?";
+else
+    CollisionsController.innerHTML = "Turn Off Render Info?";
 
 console.log(GravityController, CollisionsController, addBallController);
 
