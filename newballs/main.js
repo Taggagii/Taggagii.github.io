@@ -265,6 +265,7 @@ function update_balls(elapsed) {
 
 function render_connecting_lines() {
     if (!RENDER_CONNECTING_LINES) return;
+    if (balls.length == 0) return;
     let color = context.strokeStyle;
     context.strokeStyle = "red";
     context.beginPath();
