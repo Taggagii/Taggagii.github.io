@@ -1,21 +1,92 @@
-* {
-    padding: 0;
-    margin: 0;
-    border: 0;
-}
+
 
 body {
+    display: flex;
+    justify-content: center;
+    /* background stuff */
+    background-color: rgb(40, 20, 100);
+    background-image: url("black-mamba.png");
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+}
+
+.holder {   
+    position: relative;
+    margin-top: 50vh;
+    transform: translateY(-50%);
+}
+
+.myCard {
+    display: block;
+    position: relative;
+    background: rgb(23, 12, 55);
+    transition: transform 250ms ease;
+    transform: scale(1);
+    margin-top: 3vh;
+    border-radius: 10px;
+    cursor: pointer;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    text-align: center;
+    
+}
+
+.name__a {
+    text-decoration: none;
+    color: white;
+    font-size: min(10vw, 5vh);
+    opacity: 1;
+    mix-blend-mode: difference;
+}
+
+.myCard::before,
+.myCard::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
     width: 100%;
     height: 100%;
 }
 
-.canvasContainer {
-    width: 100%;
-    margin-top: 1vh;
-    text-align: center;
+.myCard:hover {
+    transform: scale(1.1);
 }
 
-#screen {
-    border: 1px solid black;
-    display: inline;
+.myCard::before {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 250ms ease;
 }
+
+.myCard::after {
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 250ms ease;
+}
+
+.myCard:hover::before {
+    opacity: 0;
+}
+
+.myCard:hover::after {
+    opacity: 1;
+}
+
+
+
+
+/* @media screen and (orientation:landscape) {
+
+    .myCard {
+        padding: 1vw;
+        display: inline-block;
+        margin-left: 0.5vw;
+    }
+    
+    .name__a {
+        font-size: 3vw;
+    }
+} */
