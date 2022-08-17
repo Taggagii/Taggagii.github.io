@@ -1,26 +1,51 @@
+:root {
+    --animation-time: 250ms;
+}
 
 
 body {
-    display: flex;
+    display: block;
     justify-content: center;
+    align-items: center;
     /* background stuff */
     background-color: rgb(40, 20, 100);
     background-image: url("black-mamba.png");
     font-family: 'Courier New', Courier, monospace;
-    overflow: hidden;
+}
+
+#web-based-applications {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    padding: 5vw;
 }
 
 .holder {   
-    position: relative;
-    margin-top: 50vh;
-    transform: translateY(-50%);
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+.backdrop {
+    display: inline-block;
+    background: rgb(23, 12, 55);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-size: min(5.5vw, 3vh);
+    margin-left: 50%;
+    margin-bottom: 5vh;
+    transform: translateX(-50%);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 255, 0.2);
 }
 
 .myCard {
     display: block;
     position: relative;
     background: rgb(23, 12, 55);
-    transition: transform 250ms ease;
+    transition: transform var(--animation-time) ease;
     transform: scale(1);
     margin-top: 3vh;
     border-radius: 10px;
@@ -30,7 +55,7 @@ body {
     padding-left: 4vw;
     padding-right: 4vw;
     text-align: center;
-    
+    color: white;
 }
 
 .name__a {
@@ -38,7 +63,6 @@ body {
     color: white;
     font-size: min(10vw, 5vh);
     opacity: 1;
-    mix-blend-mode: difference;
 }
 
 .myCard::before,
@@ -52,19 +76,19 @@ body {
 }
 
 .myCard:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .myCard::before {
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
     opacity: 1;
-    transition: opacity 250ms ease;
+    transition: opacity var(--animation-time) ease;
 }
 
 .myCard::after {
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 255, 0.2);
     opacity: 0;
-    transition: opacity 250ms ease;
+    transition: opacity var(--animation-time) ease;
 }
 
 .myCard:hover::before {
@@ -75,18 +99,15 @@ body {
     opacity: 1;
 }
 
+.phone-warning {
+    opacity: 0;
+    position: absolute;
+}
 
 
-
-/* @media screen and (orientation:landscape) {
-
-    .myCard {
-        padding: 1vw;
-        display: inline-block;
-        margin-left: 0.5vw;
+@media (pointer:none), (pointer:coarse) {
+    .phone-warning {
+        opacity: 1;
+        position: relative;
     }
-    
-    .name__a {
-        font-size: 3vw;
-    }
-} */
+}
