@@ -8,7 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     /* background stuff */
-    background-color: rgb(40, 20, 100);
+    background-color: black;
     background-image: url("black-mamba.png");
     font-family: 'Courier New', Courier, monospace;
 }
@@ -28,7 +28,7 @@ body {
 
 .backdrop {
     display: inline-block;
-    background: rgb(23, 12, 55);
+    background: rgb(69, 69, 69) ;
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 10px;
@@ -44,7 +44,7 @@ body {
 .myCard {
     display: block;
     position: relative;
-    background: rgb(23, 12, 55);
+    background: rgb(69, 69, 69);
     transition: transform var(--animation-time) ease;
     transform: scale(1);
     margin-top: 3vh;
