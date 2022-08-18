@@ -11,6 +11,7 @@ body {
     background-color: black;
     background-image: url("black-mamba.png");
     font-family: 'Courier New', Courier, monospace;
+    overflow-x: hidden;
 }
 
 #web-based-applications {
