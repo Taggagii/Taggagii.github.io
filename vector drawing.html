@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Graphics</title>
+    <link rel = "stylesheet" href = "main.css">
+</head>
+<body oncontextmenu="return false;">
+    <canvas style = "border: 1px solid black; margin-left: 50%; transform: translateX(-50%);" id = "screen"></canvas>
+
+    <div style = "font-size: 1rem; text-align: left;" class = "backdrop">
+        <p style = "text-align: center;">The functionality of this is that it looks neat</p>
+        <ul>
+            <li>Use left click to add black nodes</li>
+            <li>Use right click to add red nodes</li>
+            <li>Press T or the "Translate" button below to translate the black image into the red image</li>
+            <li>Press C or the "Clear" button below to clear the canvas</li>
+
+        </ul>
+    </div>
+
+    <div style = "margin-left: 50%; transform: translate(-50%); width: 10%;" class="myCard" onclick = "transition(one, two, 0);">Translate</div>
+    <div style = "margin-left: 50%; transform: translate(-50%); width: 10%;" class="myCard" onclick = "reset();">Clear</div>
+</body>
+</html>
+<script src = "vectordrawing/vector drawing.js"></script>
