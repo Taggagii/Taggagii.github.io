@@ -12,8 +12,13 @@ class NotesWriter extends Array {
         // get index to keep array sorted
         let low = 0;
         let high = this.length;
+        let mid = 0;
+
+        // while (low < high) (((mid = (low + high) >>> 1) || true) && (this[mid] < item)) ? low = mid + 1 : high = mid;
+        
         while (low < high) {
-            let mid = (low + high) >>> 1;
+            mid = (low + high) >>> 1;
+            // let mid = Math.floor((low + high) / 2);
             if (this[mid] < item) { 
                 low = mid + 1;
             } else {
