@@ -25,11 +25,23 @@
             background-color: rgb(248, 205, 149);
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
         }
+
+        .freqCharHolder {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            overflow-x: scroll;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 <body style = "background-color: blanchedalmond;">
     <p id="notes"></p>
     <button id="ding">ding</button>
+    <div class="freqCharHolder">
+        <canvas id="freqChart" width="2000" height="250px"></canvas>
+    </div>
+    
 </body>
 </html>
 <script src = "musicmaker/main.js"></script>

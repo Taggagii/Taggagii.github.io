@@ -5,6 +5,8 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 const dingButton = document.querySelector('#ding');
 const notes = document.querySelector('#notes');
 
+let audioContext = new AudioContext();
+let gainNode = audioContext.createGain();
 class NotesWriter extends Array {
     push(item, ttl) {
         // get index to keep array sorted
@@ -20,10 +22,13 @@ class NotesWriter extends Array {
         }
 
         super.splice(low, 0, item);
-
+        drawBars(this);
+        gainNode.gain.value = (this.length) ? (1 / this.length) : 1;
         notes.innerHTML = 'frequencies:<br/>' + this.join('<br/>');
         setTimeout(() => {
             this.splice(this.indexOf(item), 1);
+            drawBars(this);
+            gainNode.gain.value = (this.length) ? (1 / this.length) : 1;
             notes.innerHTML = 'frequencies:<br/>' + this.join('<br/>');
         }, ttl);
 
@@ -31,7 +36,7 @@ class NotesWriter extends Array {
     }
 };
 
-let a4 = 440;
+let a4 = 110;
 
 let notesWriter = new NotesWriter;
 
@@ -45,8 +50,8 @@ function randomizeA4() {
 }
 
 function calculateFrequencyFromHalfstep(halfStep = 0, ttl = 5000) {
-    // let note = Math.floor(a4 * Math.pow(multiple, halfStep) * 100) / 100;
-    let note = Math.pow([0.5, 2][Math.floor(Math.random() * 2)], Math.floor(Math.random() * 3)) * (Math.floor(a4 * Math.pow(multiple, halfStep) * 100) / 100); // throwing in some randomness for fun
+    let note = Math.pow(2, Math.floor(Math.random() * 4)) * (Math.floor(a4 * Math.pow(multiple, halfStep) * 100) / 100);
+    // let note = Math.pow([0.5, 2][Math.floor(Math.random() * 2)], Math.floor(Math.random() * 3)) * (Math.floor(a4 * Math.pow(multiple, halfStep) * 100) / 100); // throwing in some randomness for fun
     notesWriter.push(note, ttl);
     return note;
 }
@@ -56,8 +61,7 @@ function playNotes() {
         playNotes(...arguments[0]);
         return;
     }
-    let audioContext = new AudioContext();
-    let gainNode = audioContext.createGain();
+    // let audioContext = new AudioContext();
 
     gainNode.connect(audioContext.destination);
 
@@ -82,7 +86,8 @@ function playNotes() {
         };
         oscillators[oscillatorIndex].start(currentTime);
         oscillators[oscillatorIndex].stop(timeToKill);
-        gainNode.gain.value = 1 / ++oscillatorIndex;
+        oscillatorIndex++;
+        // gainNode.gain.value = 1 / ++oscillatorIndex;
         setTimeout(() => {
             loop(oscillatorIndex)
         }, delay);
@@ -95,8 +100,7 @@ function playChord() {
         playChord(...arguments[0]);
         return;
     }
-    let audioContext = new AudioContext();
-    let gainNode = audioContext.createGain();
+    // let gainNode = audioContext.createGain();
 
     gainNode.connect(audioContext.destination);
 
@@ -110,7 +114,7 @@ function playChord() {
         oscillators.push(oscillatorNode);
     }   
 
-    gainNode.gain.value = 1 / oscillators.length;
+    // gainNode.gain.value = 1 / oscillators.length;
     oscillators.forEach((oscillator) => {
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + killTime)
@@ -131,4 +135,52 @@ dingButton.addEventListener('click', () => {
     // playNotes(minorScale.concat(minorScale.map(x => x + divisions)).concat(minorScale.map(x => x + 2 * divisions)).concat(minorScale.map(x => x + 3 * divisions)));
     playChord(majorScale[Math.floor(Math.random() * majorScale.length)]);
 }, false);
+
+// freqChart
+
+const freqChart = document.querySelector('#freqChart');
+const context = freqChart.getContext('2d');
+
+let availableFreqs = context.canvas.width;
+let objectSize = 1;
+let spaceSize = 0;
+// context.canvas.width = 2 * availableFreqs + 1;
+
+function clear() {
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, freqChart.width, freqChart.height);
+}
+
+function removeBar(frequency) {
+    if (frequency > availableFreqs) return;
+    context.beginPath();
+    context.strokeStyle = 'white';
+    context.lineWidth = 1;
+    context.moveTo((frequency + 1) * (objectSize + spaceSize), freqChart.height);
+    context.lineTo((frequency + 1) * (objectSize + spaceSize), 0);
+    context.stroke();
+}
+
+function drawBars(frequencies) {
+    clear();
+    context.beginPath();
+    context.lineWidth = 1;
+    context.strokeStyle = 'black';
+    frequencies.forEach((frequency) => {
+        if (frequency <= availableFreqs) {
+            context.moveTo((frequency + 1) * (objectSize + spaceSize), freqChart.height);
+            context.lineTo((frequency + 1) * (objectSize + spaceSize), 0);
+        }
+    });
+    context.stroke();
+};
+
+clear();
+
+// context.scale(0.1, 1);
+
+// removeBar(50);
+// drawBar(50);
+
+
 
