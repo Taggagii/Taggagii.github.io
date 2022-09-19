@@ -29,6 +29,7 @@ async function logNgrokURL() {
         console.error('could not find endpoint');
     });
     if (url) {
+        url = url.replace(/https?/, 'https');
         console.log(`ngrok url: ${url}`);
         fs.writeFile('myjsonfile.txt', url, 'utf-8', () => {});
     } else {
