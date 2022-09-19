@@ -79,8 +79,9 @@ app.get('/ngrok', async (req, res) => {
 
 app.get('/', (req, res) => {
     res.status(200).send({
-        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">This page is cool because everything about it was styled through an API, to prove this, here's a random number: ${Math.random()} </br>Try refreshing the page.</div>`,
-        youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">${Math.random()}</div>`,
+        youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">This page is cool because everything about it was styled through an API, to prove this, here's a random number: ${Math.random()} </br>Try refreshing the page.</div>`,
+        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">${Math.random()}</div>`,
+        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">hello there little man: ${Math.random()}</div>`,
     });
 });
 
