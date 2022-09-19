@@ -54,13 +54,11 @@ function getNgrokURL() {
 }
 
 
-let ngrokURL = '';
-
 async function checkForUpdate() {
-    if (ngrokURL === '') {
-        ngrokURL = await getNgrokURL();
-    }
+    let ngrokURL = await getNgrokURL();
     let homeURL = await makeGetRequest('https://taggagii.github.io/myjsonfile.txt', 'text');
+    console.log({homeURL});
+    console.log({ngrokURL});
     if (homeURL === ngrokURL) {
         console.log('We\'ve established connection');
     } else {
@@ -70,13 +68,6 @@ async function checkForUpdate() {
     } 
 }
 
-// async function logNgrokURL() {
-//     let url = await getNgrokURL();
-//     console.log(`ngrok url: ${url}`);
-//     fs.writeFile('myjsonfile.txt', url, 'utf-8', () => {});
-// }
-// logNgrokURL();
-
 app.get('/ngrok', async (req, res) => {
     res.status(200).send({
         ngrokURL: await getNgrokURL(),
@@ -84,11 +75,6 @@ app.get('/ngrok', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    if (!githubUpdated) {
-        console.log('The GitHub pages website has been updated');
-        githubUpdated = true;
-    }
-
     res.status(200).send({
         youDidItRight: 'the message that you\'re reading was served by an express api running through ngrok',
     });
