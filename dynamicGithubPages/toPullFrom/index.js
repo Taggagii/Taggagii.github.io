@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
     // }
 
     res.status(200).send({
-        youDidItRight: 'I\m in pain and if you\'re seeing this the code worked and I can dynamically update the code on the front end from the backend',
+        youDidItRight: 'words that make me sad',
     });
 });
 
