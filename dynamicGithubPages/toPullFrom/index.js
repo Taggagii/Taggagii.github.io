@@ -19,6 +19,7 @@ app.use(cors({
 }));
 
 // make getrequest to http://localhost:4040/api/tunnels to get running ngrok tunnels
+const githubUpdated = false;
 
 
 function getNgrokURL() {
@@ -53,6 +54,10 @@ app.get('/ngrok', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
+    if (!githubUpdated) {
+        console.log('The GitHub pages website has been updated');
+    }
+
     res.status(200).send({
         youDidItRight: 'the message that you\'re reading was served by an express api running through ngrok',
     });
