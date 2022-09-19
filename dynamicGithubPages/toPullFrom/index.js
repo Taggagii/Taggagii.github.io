@@ -65,12 +65,10 @@ async function checkForUpdate() {
         console.log('We\'ve established connection');
     } else {
         setTimeout(() => {
-            console.log("ree");
             checkForUpdate();
         }, 1000);
     } 
 }
-checkForUpdate();
 
 // async function logNgrokURL() {
 //     let url = await getNgrokURL();
@@ -101,5 +99,7 @@ app.listen(
     PORT, 
     () => {
         console.log(`API is listening on: http://localhost:${PORT}`);
+        console.log('Checking for connection to GitHub...');
+        checkForUpdate();
     }
 );
