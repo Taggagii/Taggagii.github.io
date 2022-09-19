@@ -3,6 +3,6 @@
         "hostLocally": "nodemon dynamicGithubPages/toPullFrom/index.js",
         "hostNgrok": "ngrok http 8080", 
         "updateMyJson": "node dynamicGithubPages/toPullFrom/jsonupdater.js",
-        "githubDeploy": "git add . && git commit -m 'updating ngrok url' && git push origin master"
+        "githubDeploy": "git add . && git commit -m \"updating ngrok url\" && git push origin master"
       }
 }
