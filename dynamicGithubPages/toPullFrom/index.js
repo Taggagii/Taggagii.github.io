@@ -54,12 +54,15 @@ function getNgrokURL() {
     });
 }
 
+let ngrokURL = '';
 async function checkForUpdate(timeElapsed = 0) {
-    let ngrokURL = await getNgrokURL();
+    if (ngrokURL === '') {
+        ngrokURL = await getNgrokURL();
+        ngrokURL = ngrokURL.replace(/https?:\/\//, '');
+    }
     let homeURL = await makeGetRequest('https://taggagii.github.io/myjsonfile.txt', 'text');
-    console.log({homeURL});
-    console.log({ngrokURL});
-    if (homeURL === ngrokURL) {
+    homeURL = homeURL.replace(/https?:\/\//, '');
+    if (homeURL == ngrokURL) {
         console.log(`Connection established: ${timeElapsed}s`);
     } else {
         setTimeout(() => {
