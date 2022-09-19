@@ -25,7 +25,7 @@
     }
 
     async function makeConnectionToHome() {
-        let homeURL = await makeGetRequest('../myjsonfile.txt', 'txt');
+        let homeURL = await makeGetRequest('../myjsonfile.txt', 'text');
         console.log(`homeurl: ${homeURL}`);
         // grab the message from the home server
         let homeResponse = await makeGetRequest(homeURL, 'json');
