@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static GitHub Page</title>
+</head>
+<body>
+    <p id="something">Nothing</p>
+</body>
+</html>
+<script>
+    const somethingParagraph = document.querySelector('#something');
+    function makeGetRequest(url, responseType = 'json') {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.responseType = responseType;
+            xhr.open('GET', url);
+            xhr.onload = function() {
+                resolve(this.response);
+            };
+            xhr.send();
+        });
+    }
+
+
+
+    // makeGetRequest('http://3d03-2605-b100-e00f-38d3-4f1-1b8a-bf81-67ce.ngrok.io/ngrok', (value) => {
+    //     console.log(value);
+    // });
+
+    async function makeConnectionToHome() {
+        let homeURL = await makeGetRequest('../myjsonfile.txt', 'txt');
+        console.log(`homeurl: ${homeURL}`);
+        // grab the message from the home server
+        let homeResponse = await makeGetRequest(homeURL, 'json');
+        // display the message to the user
+        somethingParagraph.innerHTML = homeResponse.youDidItRight;
+    }
+    
+    window.onload = makeConnectionToHome;
+
+    // let xhr = new XMLHttpRequest();
+    // xhr.responseType = 'json';
+
+    // xhr.open('GET', 'http://3d03-2605-b100-e00f-38d3-4f1-1b8a-bf81-67ce.ngrok.io/ngrok');
+    // xhr.onload = function() {
+    //     somethingParagraph.innerHTML = this.response?.ngrokURL;
+    // };
+    // xhr.send();
+
+</script>

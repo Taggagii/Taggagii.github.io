@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "fs": "^0.0.1-security"
+  },
+  "scripts": {
+    "hostLocally": "nodemon toPullFrom/index.js",
+    "hostNgrok": "ngrok http 8080"
+  }
+}
