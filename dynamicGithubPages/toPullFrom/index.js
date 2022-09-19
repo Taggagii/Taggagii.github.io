@@ -54,7 +54,7 @@ app.get('/ngrok', async (req, res) => {
 
 app.get('/', (req, res) => {
     res.status(200).send({
-        youDidItRight: 'this message that you\'re reading was served by an express api running through ngrok',
+        youDidItRight: 'the message that you\'re reading was served by an express api running through ngrok',
     });
 });
 
