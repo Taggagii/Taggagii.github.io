@@ -39,12 +39,12 @@ function getNgrokURL() {
     });
 }
 
-async function logNgrokURL() {
-    let url = await getNgrokURL();
-    console.log(`ngrok url: ${url}`);
-    fs.writeFile('myjsonfile.txt', url, 'utf-8', () => {});
-}
-logNgrokURL();
+// async function logNgrokURL() {
+//     let url = await getNgrokURL();
+//     console.log(`ngrok url: ${url}`);
+//     fs.writeFile('myjsonfile.txt', url, 'utf-8', () => {});
+// }
+// logNgrokURL();
 
 app.get('/ngrok', async (req, res) => {
     res.status(200).send({
@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
     // }
 
     res.status(200).send({
-        youDidItRight: 'This is a message that we\'re sending to you from the backend',
+        youDidItRight: 'I\m in pain and if you\'re seeing this the code worked and I can dynamically update the code on the front end from the backend',
     });
 });
 

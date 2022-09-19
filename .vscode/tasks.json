@@ -1,0 +1,61 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "LocalHost",
+			"command": "npm run hostLocally",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"type": "shell",
+			"label": "LocalNGROK",
+			"command": "npm run hostNgrok",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"type": "shell",
+			"label": "UpdateMyJson",
+			"command": "npm run updateMyJson",
+			"presentation": {
+                "reveal": "always",
+                "close": true
+			}
+		},
+        {
+            "type": "shell",
+			"label": "PushToGithub",    
+            "dependsOrder": "parallel",
+            "command": "npm run githubDeploy",
+            "presentation": {
+                "close": true
+            },
+			"problemMatcher": []
+		},
+		{
+			"label": "LogAndPushAndLocal",
+			"dependsOn": [
+                "UpdateMyJson",
+                "PushToGithub",
+                "LocalHost"
+			],
+            "dependsOrder": "sequence",
+			"problemMatcher": []
+		},
+		{
+			"label": "start-core",
+			"dependsOn": [
+                "LocalNGROK",
+                "LogAndPushAndLocal"
+			],
+            "dependsOrder": "parallel",
+			"problemMatcher": []
+		}
+	]
+}
