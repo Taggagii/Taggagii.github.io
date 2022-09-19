@@ -53,14 +53,8 @@ app.get('/ngrok', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    // if (Object.keys(req.body).length) {
-    //     res.status(400).send({
-    //         message: 'We do not acccept requests to this endpoint that contain a body',
-    //     });
-    // }
-
     res.status(200).send({
-        youDidItRight: 'words that make me sad',
+        youDidItRight: 'this message that you\'re reading was served by an express api running through ngrok',
     });
 });
 
