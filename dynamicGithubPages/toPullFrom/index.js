@@ -9,6 +9,7 @@ const XMLHttpRequest = require('xhr2');
 const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
+const { get } = require('http');
 const app = express();
 const PORT = 8080;
 
@@ -19,8 +20,20 @@ app.use(cors({
 }));
 
 // make getrequest to http://localhost:4040/api/tunnels to get running ngrok tunnels
-const githubUpdated = false;
+let githubUpdated = false;
 
+function makeGetRequest(url, type = 'json') {
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = type;
+        xhr.open('GET', url);
+        xhr.onload = () => {
+            // let myResponse = xhr.response.tunnels.filter(host => host.config.addr === 'http://localhost:8080')[0]?.public_url ?? false;
+            resolve(xhr.response);
+        };
+        xhr.send();
+    });
+}
 
 function getNgrokURL() {
     return new Promise((resolve, reject) => {
@@ -40,6 +53,25 @@ function getNgrokURL() {
     });
 }
 
+
+let ngrokURL = '';
+
+async function checkForUpdate() {
+    if (ngrokURL === '') {
+        ngrokURL = await getNgrokURL();
+    }
+    let homeURL = await makeGetRequest('https://taggagii.github.io/myjsonfile.txt', 'text');
+    if (homeURL === ngrokURL) {
+        console.log('We\'ve established connection');
+    } else {
+        setTimeout(() => {
+            console.log("ree");
+            checkForUpdate();
+        }, 1000);
+    } 
+}
+checkForUpdate();
+
 // async function logNgrokURL() {
 //     let url = await getNgrokURL();
 //     console.log(`ngrok url: ${url}`);
@@ -56,6 +88,7 @@ app.get('/ngrok', async (req, res) => {
 app.get('/', (req, res) => {
     if (!githubUpdated) {
         console.log('The GitHub pages website has been updated');
+        githubUpdated = true;
     }
 
     res.status(200).send({
