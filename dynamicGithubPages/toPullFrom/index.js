@@ -10,6 +10,7 @@ const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
 const { get } = require('http');
+const { time } = require('console');
 const app = express();
 const PORT = 8080;
 
@@ -53,17 +54,14 @@ function getNgrokURL() {
     });
 }
 
-
-async function checkForUpdate() {
+async function checkForUpdate(timeElapsed = 0) {
     let ngrokURL = await getNgrokURL();
     let homeURL = await makeGetRequest('https://taggagii.github.io/myjsonfile.txt', 'text');
-    console.log({homeURL});
-    console.log({ngrokURL});
     if (homeURL === ngrokURL) {
-        console.log('We\'ve established connection');
+        console.log(`Connection established: ${timeElapsed}s`);
     } else {
         setTimeout(() => {
-            checkForUpdate();
+            checkForUpdate(timeElapsed + 1);
         }, 1000);
     } 
 }
