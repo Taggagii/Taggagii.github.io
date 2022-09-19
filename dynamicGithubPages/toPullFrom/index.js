@@ -57,6 +57,8 @@ function getNgrokURL() {
 async function checkForUpdate(timeElapsed = 0) {
     let ngrokURL = await getNgrokURL();
     let homeURL = await makeGetRequest('https://taggagii.github.io/myjsonfile.txt', 'text');
+    console.log({homeURL});
+    console.log({ngrokURL});
     if (homeURL === ngrokURL) {
         console.log(`Connection established: ${timeElapsed}s`);
     } else {
