@@ -102,7 +102,7 @@ app.listen(
     PORT, 
     () => {
         console.log(`API is listening on: http://localhost:${PORT}`);
-        // console.log('Checking for connection to GitHub...');
-        // checkForUpdate();
+        console.log('Checking for connection to GitHub...');
+        checkForUpdate();
     }
 );
