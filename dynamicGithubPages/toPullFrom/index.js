@@ -3,21 +3,23 @@ for (let i = 0; i < 100; ++i) {
 }
 process.stdout.write('\n');
 
-
-
 const XMLHttpRequest = require('xhr2');
 const express = require('express');
-const fs = require('fs');
 const cors = require('cors');
-const { get } = require('http');
-const { time } = require('console');
 const app = express();
 const PORT = 8080;
 
-app.use(express.json());
+
+var bodyParser = require('body-parser')
+
+// middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true,
+}));
+
 app.use(cors({
     origin: '*',
-    methods: ['GET'],
 }));
 
 // make getrequest to http://localhost:4040/api/tunnels to get running ngrok tunnels
@@ -72,6 +74,7 @@ async function checkForUpdate(timeElapsed = 0) {
 }
 
 app.get('/ngrok', async (req, res) => {
+    console.log('post request made', req.body);
     res.status(200).send({
         ngrokURL: await getNgrokURL(),
     });
@@ -85,12 +88,21 @@ app.get('/', (req, res) => {
     });
 });
 
+app.post('/', (req, res) => {
+    console.log('post request made', req.body);
+    res.status(201).send({
+        postResponse: req.body.testing,
+        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">${Math.random()}</div>`,
+        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">hello there little man: ${Math.random()}</div>`,
+    });
+});
+
 
 app.listen(
     PORT, 
     () => {
         console.log(`API is listening on: http://localhost:${PORT}`);
-        console.log('Checking for connection to GitHub...');
-        checkForUpdate();
+        // console.log('Checking for connection to GitHub...');
+        // checkForUpdate();
     }
 );

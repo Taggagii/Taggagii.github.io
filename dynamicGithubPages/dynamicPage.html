@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Static GitHub Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 <body>
     <p id="something"></p>
@@ -24,8 +26,27 @@
         });
     }
 
+    function encodeParams(params) {
+        let urlEncodedData = "", urlEncodedDataPairs = [], name;
+        for (name in params) {
+            urlEncodedDataPairs.push(`${encodeURIComponent(name)}=${encodeURIComponent(params[name])}`);
+        }
+        return urlEncodedDataPairs.join('&');
+    }
+
+    function makePostRequest(params) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080');
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.send(encodeParams(params));
+    }
+    makePostRequest({testing: 'things'});
+
+
     async function makeConnectionToHome() {
-        let homeURL = await makeGetRequest('../myjsonfile.txt', 'text');
+        // let homeURL = await makeGetRequest('../myjsonfile.txt', 'text');
+        let homeURL = 'http://localhost:8080'
         console.log(`homeurl: ${homeURL}`);
         // grab the message from the home server
         let homeResponse = await makeGetRequest(homeURL, 'json');
