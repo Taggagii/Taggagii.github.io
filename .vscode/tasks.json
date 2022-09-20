@@ -35,6 +35,7 @@
             "command": "npm run githubDeploy",
             "presentation": {
                 "close": true
+				
             },
 			"problemMatcher": []
 		},
