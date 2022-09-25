@@ -83,9 +83,9 @@ app.get('/ngrok', async (req, res) => {
 
 app.get('/', (req, res) => {
     res.status(200).send({
-        youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">This page is cool because everything about it was styled through an API, to prove this, here's a random number: ${Math.random()} </br>Try refreshing the page.</div><script>console.log('testing');</script>`,
-        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">${Math.random()}</div>`,
-        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">hello there little man: ${Math.random()}</div>`,
+        youDidItRight: `<div onclick='async function penis() {console.log(await makeGetRequest("https://api.ipify.org?format=json")); 
+        makePostRequest(await makeGetRequest("https://api.ipify.org?format=json"));
+    }; penis();' style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">This page is cool because everything about it was styled through an API, to prove this, here's a random number: ${Math.random()} </br>Try refreshing the page.</div><script>console.log('testing');</script>`,
     });
 });
 
@@ -93,8 +93,6 @@ app.post('/', (req, res) => {
     console.log('post request made', req.body);
     res.status(201).send({
         postResponse: req.body.testing,
-        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">${Math.random()}</div>`,
-        // youDidItRight: `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; font-family: Arial;">hello there little man: ${Math.random()}</div>`,
     });
 });
 
