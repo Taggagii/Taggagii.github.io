@@ -2,130 +2,43 @@
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-const dingButton = document.querySelector('#ding');
-const notes = document.querySelector('#notes');
-
 let audioContext = new AudioContext();
 let gainNode = audioContext.createGain();
-class NotesWriter extends Array {
-    push(item, ttl) {
-        // get index to keep array sorted
-        let low = 0;
-        let high = this.length;
-        let mid = 0;
 
-        // while (low < high) (((mid = (low + high) >>> 1) || true) && (this[mid] < item)) ? low = mid + 1 : high = mid;
-        
-        while (low < high) {
-            mid = (low + high) >>> 1;
-            // let mid = Math.floor((low + high) / 2);
-            if (this[mid] < item) { 
-                low = mid + 1;
-            } else {
-                high = mid;
-            }
-        }
+/** @type {HTMLCanvasElement} */
+const noteSelector = document.querySelector('#noteSelector');
+const context = noteSelector.getContext('2d');
+const frequencyDisplayer = document.querySelector('#frequencyDisplayer');
+const volumeSlider = document.querySelector('#volumeSlider');
+const stopButton = document.querySelector('#stopButton');
+const mouseoverFreqDisplayer = document.querySelector('#mouseoverFreqDisplayer');
+const mouseoverNoteDisplayer = document.querySelector('#mouseoverNoteDisplayer');
 
-        super.splice(low, 0, item);
-        drawBars(this);
-        gainNode.gain.value = (this.length) ? (1 / this.length) : 1;
-        notes.innerHTML = 'frequencies:<br/>' + this.join('<br/>');
-        setTimeout(() => {
-            this.splice(this.indexOf(item), 1);
-            drawBars(this);
-            gainNode.gain.value = (this.length) ? (1 / this.length) : 1;
-            notes.innerHTML = 'frequencies:<br/>' + this.join('<br/>');
-        }, ttl);
 
-        return this.length;
-    }
+let mouseButtonPressed = 0; // one higher than the actual button for 0 === false comparison
+
+// removing the context menu
+document.oncontextmenu = () => {
+    return false;
 };
 
+// rendering information
+const nodeRadius = 10;
+const nodeRadiusSquared = Math.pow(nodeRadius, 2);
+function clear() {
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, noteSelector.width, noteSelector.height);
+}
+
+// music information
+
 let a4 = 110;
-
-let notesWriter = new NotesWriter;
-
 let divisions = 12;
 const multiple = Math.pow(2, 1 / divisions);
 
-let killTime = 10;
-
-function randomizeA4() {
-    a4 = Math.floor(Math.random() * 500 + 100)
-}
-
-function calculateFrequencyFromHalfstep(halfStep = 0, ttl = 5000) {
-    let note = Math.pow(2, Math.floor(Math.random() * 4)) * (Math.floor(a4 * Math.pow(multiple, halfStep) * 100) / 100);
-    // let note = Math.pow([0.5, 2][Math.floor(Math.random() * 2)], Math.floor(Math.random() * 3)) * (Math.floor(a4 * Math.pow(multiple, halfStep) * 100) / 100); // throwing in some randomness for fun
-    notesWriter.push(note, ttl);
+function calculateFrequencyFromHalfstep(halfStep = 0, octave = 0) {
+    let note = a4 * Math.pow(multiple, halfStep + (12 * octave))
     return note;
-}
-
-function playNotes() {
-    if (typeof arguments[0] === 'object') {
-        playNotes(...arguments[0]);
-        return;
-    }
-    // let audioContext = new AudioContext();
-
-    gainNode.connect(audioContext.destination);
-
-    let oscillators = [];
-
-    let delay = 100;
-    let ttl = ((killTime / 2) + (arguments.length * (delay / 1000))) * 1000;
-    for (let i = 0; i < arguments.length; ++i) {
-        let oscillatorNode = audioContext.createOscillator();
-        oscillatorNode.type = 'triangle';
-        oscillatorNode.frequency.setValueAtTime(calculateFrequencyFromHalfstep(arguments[i], ttl), audioContext.currentTime);
-        oscillatorNode.connect(gainNode);
-        oscillators.push(oscillatorNode);
-    }   
-
-    let currentTime = audioContext.currentTime;
-    let timeToKill = currentTime + killTime + (oscillators.length * (delay / 1000));
-    const loop = (oscillatorIndex = 0) => {
-        if (oscillatorIndex == oscillators.length) {
-            gainNode.gain.exponentialRampToValueAtTime(0.000001, timeToKill);
-            return;
-        };
-        oscillators[oscillatorIndex].start(currentTime);
-        oscillators[oscillatorIndex].stop(timeToKill);
-        oscillatorIndex++;
-        // gainNode.gain.value = 1 / ++oscillatorIndex;
-        setTimeout(() => {
-            loop(oscillatorIndex)
-        }, delay);
-    };
-    loop();
-}
-
-function playChord() {
-    if (typeof arguments[0] === 'object') {
-        playChord(...arguments[0]);
-        return;
-    }
-    // let gainNode = audioContext.createGain();
-
-    gainNode.connect(audioContext.destination);
-
-    let oscillators = [];
-    let ttl = killTime * 1000;
-    for (let i = 0; i < arguments.length; ++i) {
-        let oscillatorNode = audioContext.createOscillator();
-        oscillatorNode.type = 'triangle';
-        oscillatorNode.frequency.setValueAtTime(calculateFrequencyFromHalfstep(arguments[i], ttl), audioContext.currentTime);
-        oscillatorNode.connect(gainNode);
-        oscillators.push(oscillatorNode);
-    }   
-
-    // gainNode.gain.value = 1 / oscillators.length;
-    oscillators.forEach((oscillator) => {
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + killTime)
-    });
-
-    // gainNode.gain.exponentialRampToValueAtTime(0.000001, audioContext.currentTime + killTime);
 }
 
 let majorScale = [0, 2, 4, 5, 7, 9, 11, 12];
@@ -134,58 +47,182 @@ let minorScale = [0, 2, 3, 5, 7, 8, 10, 12];
 let majorChord = [0, 4, 7];
 let minorChord = [0, 3, 7];
 
-dingButton.addEventListener('click', () => {
-    let offset = 0;
-    // randomizeA4();
-    // playNotes(minorScale.concat(minorScale.map(x => x + divisions)).concat(minorScale.map(x => x + 2 * divisions)).concat(minorScale.map(x => x + 3 * divisions)));
-    playChord(majorScale[Math.floor(Math.random() * majorScale.length)]);
-}, false);
 
-// freqChart
-
-const freqChart = document.querySelector('#freqChart');
-const context = freqChart.getContext('2d');
-
-let availableFreqs = context.canvas.width;
-let objectSize = 1;
-let spaceSize = 0;
-// context.canvas.width = 2 * availableFreqs + 1;
-
-function clear() {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, freqChart.width, freqChart.height);
-}
-
-function removeBar(frequency) {
-    if (frequency > availableFreqs) return;
-    context.beginPath();
-    context.strokeStyle = 'white';
-    context.lineWidth = 1;
-    context.moveTo((frequency + 1) * (objectSize + spaceSize), freqChart.height);
-    context.lineTo((frequency + 1) * (objectSize + spaceSize), 0);
-    context.stroke();
-}
-
-function drawBars(frequencies) {
+let musicNotes = [];
+musicNotes.display = function () {
+    frequencyDisplayer.innerHTML = JSON.stringify(this.map((musicNote) => musicNote.freq)) + JSON.stringify(this.map((musicNote) => musicNote.note))
     clear();
-    context.beginPath();
-    context.lineWidth = 1;
-    context.strokeStyle = 'black';
-    frequencies.forEach((frequency) => {
-        if (frequency <= availableFreqs) {
-            context.moveTo((frequency + 1) * (objectSize + spaceSize), freqChart.height);
-            context.lineTo((frequency + 1) * (objectSize + spaceSize), 0);
+    for (let i = 0; i < this.length; ++i) {
+        this[i].draw();
+    }
+}
+musicNotes.push = function () {
+    const returnValue = Array.prototype.push.apply(this, arguments);
+    this.display();
+    return returnValue;
+}
+musicNotes.splice = function () {
+    const returnValue = Array.prototype.splice.apply(this, arguments);
+    this.display();
+    return returnValue;
+} 
+musicNotes.remove = function () {
+    if (arguments[0] > this.length) {
+        return Error('You cannot remove elements past the end of the array');
+    } else {
+        return this.splice(arguments[0], 1)[0];
+    }
+}
+
+
+// note finder
+const baseFreqs = [16.35, 17.32, 18.35, 19.45, 20.60, 21.83, 23.12, 24.50, 25.96, 27.50, 30.87];
+const baseNotes = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'b'];
+
+function freqToNote(freq) {
+    let min = undefined;
+    let minIndex = undefined
+    let minOctave = undefined;
+    for (let i = 0; i < baseFreqs.length; ++i) {
+        const octave = Math.log2(freq / baseFreqs[i]);
+        const octaveRounded = Math.round(octave);
+        const difference = Math.abs(octave - octaveRounded);
+        if (difference <= min || min === undefined) {
+            min = difference;
+            minIndex = i;
+            minOctave = octaveRounded;
         }
-    });
-    context.stroke();
+    }
+    return baseNotes[minIndex] + minOctave.toString();
+}
+
+// MusicNote object containing an oscillator and where it appears on the screen
+
+function calculateFreq(x, y) {
+    const freq = (x + (noteSelector.height - y)); // sum
+    // const freq = Math.log(x + (noteSelector.height - y)) / Math.log(1.004); // logarithmic
+    return Math.round((freq + baseFreqs[0]) * 100) / 100;
+}
+
+class MusicNote {
+    constructor(x, y, freq = undefined, type = 'sine') {
+        this.x = x;
+        this.y = y;
+        this.freq = freq ?? calculateFreq(x, y);
+        this.note = freqToNote(this.freq);
+        // if (musicNotes.find((musicNote) => musicNote.note === this.note)) return;
+        if (musicNotes.find((musicNote) => musicNote.freq === this.freq) + 1) return;
+
+        this.oscillatorNode = audioContext.createOscillator();
+        this.oscillatorNode.type = type;
+        this.oscillatorNode.frequency.setValueAtTime(this.freq, audioContext.currentTime);
+        this.oscillatorNode.connect(gainNode);
+
+        // initalize the oscillator across the program
+        musicNotes.push(this);
+        gainNode.connect(audioContext.destination) 
+        this.play();
+        this.draw();
+    }
+
+    play() {
+        if (!this.playing) {
+            this.oscillatorNode.start(audioContext.currentTime);
+            gainNode.gain.value = suggestedGainValue();
+            this.playing = true;
+        }
+    }
+
+    stop(index = undefined) {
+        musicNotes.remove(index ?? musicNotes.indexOf(this)).oscillatorNode.stop(audioContext.currentTime);
+        gainNode.gain.value = suggestedGainValue();
+    }
+
+    draw() {
+        context.beginPath();
+        context.fillStyle = 'black';
+        context.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI);
+        context.fill();
+    }
+}
+
+// handling oscillators
+
+let baseVolume = volumeSlider.value / 10;
+const suggestedGainValue = () => {
+    let value = (musicNotes.length) ? (baseVolume / musicNotes.length) : baseVolume;
+    return value;
 };
 
-clear();
+function stopOscillators() {
+    let length = musicNotes.length;
+    for (let i = 0; i < length; ++i) {
+        musicNotes[0].stop(0);
+    }
+}
 
-// context.scale(0.1, 1);
+function getMusicNoteFromCoord(x, y) {
+    for (let i = 0; i < musicNotes.length; ++i) {
+        if (Math.pow(x - musicNotes[i].x, 2) + Math.pow(y - musicNotes[i].y, 2) <= nodeRadiusSquared) {
+            return {musicNote: musicNotes[i], index: i};
+        }
+    }    
+    return false;   
+}
 
-// removeBar(50);
-// drawBar(50);
+function handleMouseEvent(event) {
+    const boundingRect = noteSelector.getBoundingClientRect();
+    let x = Math.floor(event.x - boundingRect.x);
+    let y = Math.floor(event.y - boundingRect.y);
 
+    event.preventDefault();
+    switch (mouseButtonPressed) {
+        case 1: // left mouse
+            new MusicNote(x, y)
+            break;
+        case 3: // right mouse     
+            // find the musicNote that you're clicking and stop it
+            const { musicNote, index } = getMusicNoteFromCoord(x, y);
+            musicNote && musicNote.stop(index)
+            musicNotes.display();
+    }  
+    return {x, y}
+}
+
+
+noteSelector.addEventListener('mousedown', (event) => {
+    mouseButtonPressed = event.button + 1;
+    handleMouseEvent(event);
+});
+
+noteSelector.addEventListener('mouseup', (event) => {
+    mouseButtonPressed = 0;
+    mousePressed = false;
+})
+
+noteSelector.addEventListener('mousemove', (event) => {
+    const {x, y} = handleMouseEvent(event);
+    const freq = calculateFreq(x, y);
+    console.log(freq);
+    const note = freqToNote(freq);
+    mouseoverFreqDisplayer.innerHTML = freq;
+    mouseoverNoteDisplayer.innerHTML = note
+});
+
+noteSelector.addEventListener('mouseout', (event) => {
+    mouseButtonPressed = 0;
+    mouseoverFreqDisplayer.innerHTML = '';
+})
+
+volumeSlider.addEventListener('input', () => {
+    baseVolume = volumeSlider.value / 10;
+    gainNode.gain.value = suggestedGainValue();
+})
+
+stopButton.addEventListener('click', () => {
+    stopOscillators();
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, noteSelector.width, noteSelector.height);
+});
 
 

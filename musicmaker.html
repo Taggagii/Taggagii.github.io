@@ -5,44 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Stuff</title>
-    <link rel="stylesheet" href = "main.css">
-    <style>
-        button {
-            display: inline-block; 
-            transform: translate(-50%, -50%); 
-            position: absolute; 
-            top: 50%; 
-            left: 50%;
-            padding: 2vw;
-            background-color: burlywood;
-            margin-right: 50px;
-            font-size: 15em;
-            border-radius: 20px;
-            transition: background-color box-shadow;
-            transition-duration: 500ms;
-        }
-
-        button:hover {
-            background-color: rgb(248, 205, 149);
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        .freqCharHolder {
-            position: absolute;
-            top: 80%;
-            left: 50%;
-            overflow-x: scroll;
-            transform: translateX(-50%);
-        }
-    </style>
 </head>
-<body style = "background-color: blanchedalmond;">
-    <p id="notes"></p>
-    <button id="ding">ding</button>
-    <div class="freqCharHolder">
-        <canvas id="freqChart" width="2000" height="250px"></canvas>
-    </div>
-    
+<body>
+    <!-- <input type="range" min="1" max="2000" value="50" id="freqSlider">
+    <label for="freqSlider">Frequency</label>
+    <br/>
+    <input type="range" min="0" max="15" value="10" value="volume" id="volumeSlider">
+    <label for="volumeSlider">Volume</label>
+    <br/>
+    <input type="button" value="play" id="playButton">
+     -->
+    <!-- Building the input technique -->
+    <h1 style="color: red; text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2)">In Development</h1>
+    <canvas style="border: 1px solid black;" id="noteSelector" width="1000" height="1000"></canvas>
+    <div id="mouseoverFreqDisplayer"></div>
+    <div id="mouseoverNoteDisplayer"></div>
+    <input type="range" min="0" max="15" value="5" value="volume" id="volumeSlider">
+    <label for="volumeSlider">Volume</label>
+    <br/>
+    <input type="button" value="stop" id="stopButton">
+    <p id="frequencyDisplayer"></p>
 </body>
 </html>
 <script src = "musicmaker/main.js"></script>
