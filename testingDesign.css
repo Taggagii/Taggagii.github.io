@@ -1,0 +1,38 @@
+:root {
+    --animation-time: 250ms;
+    --backing-color: #fba92c;
+    --dark-color: #141414;
+    --gray-color: #565656;
+    --silver-color: #9e9e9e;
+    --white-color: #ffffff;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+}
+
+section#introduction {
+    background-color: var(--backing-color);
+}
+
+section#web-based-applications {
+    background-color: var(--silver-color);
+}
+
+section.fwh-slide {
+    border: 1px solid black;
+    /* fundamental */
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+section.fwh-slide p {
+    margin: 0;
+}
+
+
+.transition-curve {
+    display: block;
+    
+}
