@@ -69,8 +69,11 @@ const processData = (rows) => {
         y: allYs[yLabel],
         text,
         type: 'scatter',
-        mode: 'markers',
+        mode: 'lines',
         name: yLabel,
+		line: {
+			shape: "spline"
+		}
     }))
 
     return traces;
